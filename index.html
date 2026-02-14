@@ -1,476 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OSPAIL | Registro de Prestaciones Médicas</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REIBP y blanqueo: pautas oficiales para su deducción en el Impuesto a las Ganancias</title>
   <style>
-    /* =========================================================
-       OSPA – ESTILO INSTITUCIONAL (REEMPLAZO DE MARCA)
-       1) Pegá acá el LOGO con link directo .png/.jpg (no álbum)
-       2) Reemplazá los 4 colores por los del logo (HEX)
-       ========================================================= */
-
+    /* CSS inline aquí */
     :root{
-      /* === COLORES DE MARCA (CAMBIAR POR LOS DEL LOGO) === */
-      --brand-primario:   #2F5D50;  /* color principal del logo */
-      --brand-secundario: #5E8F7B;  /* segundo color del logo */
-      --brand-fondo:      #EAF5EF;  /* verde pastel muy claro (fondo) */
-      --brand-neutro:     #121212;  /* negro/gris del logo */
-
-      /* === SISTEMA === */
-      --blanco: #FFFFFF;
-      --borde: rgba(18,18,18,.14);
-      --sombra: 0 10px 30px rgba(0,0,0,.06);
-      --radius: 14px;
+      --azul-profundo: #001122;
+      --azul-institucional: #0066cc;
+      --cyan: #00ccff;
+      --blanco: #ffffff;
+      --texto: #2c2c2c;
+      --max-width: 900px;
     }
-
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--brand-fondo);
-      color: var(--brand-neutro);
-    }
-
-    .wrap{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      padding: 14px 16px;
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.72);
-      border: 1px solid var(--borde);
-      box-shadow: var(--sombra);
-      backdrop-filter: blur(6px);
-      margin-bottom: 18px;
-    }
-
-    .logo{
-      max-width: 170px;
-      height: auto;
-      object-fit: contain;
-      display:block;
-    }
-
-    .titlebox h1{
-      margin:0;
-      font-size: 20px;
-      color: var(--brand-primario);
-      line-height: 1.15;
-    }
-    .titlebox p{
-      margin: 6px 0 0;
-      font-size: 13px;
-      color: rgba(18,18,18,.72);
-    }
-
-    .card{
-      background: var(--blanco);
-      border: 1px solid var(--borde);
-      border-radius: var(--radius);
-      box-shadow: var(--sombra);
-      padding: 22px;
-    }
-
-    .section{
-      margin-top: 18px;
-      padding-top: 14px;
-      border-top: 1px dashed rgba(18,18,18,.18);
-    }
-    .section:first-child{
-      margin-top:0;
-      padding-top:0;
-      border-top:none;
-    }
-
-    .section-title{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin: 0 0 12px;
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--brand-primario);
-    }
-    .section-title:before{
-      content:"";
-      width: 10px;
-      height: 20px;
-      border-radius: 999px;
-      background: var(--brand-secundario);
-      display:inline-block;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-    }
-
-    label{
-      display:block;
-      font-size: 12px;
-      font-weight: 700;
-      margin: 0 0 6px;
-      color: rgba(18,18,18,.86);
-    }
-
-    input, select, textarea{
-      width:100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(18,18,18,.18);
-      background: #fff;
-      font-size: 14px;
-      outline: none;
-      transition: border-color .15s ease, box-shadow .15s ease;
-    }
-
-    input:focus, select:focus, textarea:focus{
-      border-color: rgba(47,93,80,.45);
-      box-shadow: 0 0 0 4px rgba(94,143,123,.18);
-    }
-
-    textarea{ min-height: 92px; resize: vertical; }
-
-    .row-actions{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top: 18px;
-      align-items:center;
-    }
-
-    button{
-      appearance:none;
-      border:none;
-      border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 14px;
-      font-weight: 800;
-      cursor:pointer;
-      background: var(--brand-primario);
-      color: #fff;
-      transition: transform .05s ease, opacity .15s ease;
-    }
-    button:hover{ opacity:.92; }
-    button:active{ transform: translateY(1px); }
-
-    .btn-ghost{
-      background: transparent;
-      color: var(--brand-primario);
-      border: 1px solid rgba(47,93,80,.35);
-    }
-
-    .status{
-      font-size: 13px;
-      font-weight: 700;
-      color: rgba(18,18,18,.75);
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(18,18,18,.10);
-      background: rgba(255,255,255,.70);
-      min-width: 260px;
-      flex: 1;
-    }
-
-    .note{
-      margin-top: 14px;
-      font-size: 12px;
-      color: rgba(18,18,18,.66);
-      line-height: 1.35;
-    }
-
-    .small{
-      font-size: 12px;
-      color: rgba(18,18,18,.70);
+    html,body{height:100%;background:var(--blanco);color:var(--texto);font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; margin:0;}
+    .top-deco{height:6px;background:var(--cyan);width:100%;}
+    header{background:var(--azul-profundo);color:var(--blanco);padding:12px 16px;display:flex;align-items:center;gap:16px;}
+    .logo{height:38px;display:block;}
+    .container{max-width:var(--max-width);margin:28px auto;padding:0 16px;}
+    h1{font-size:28px;margin:8px 0 12px;line-height:1.15;color:var(--azul-profundo);}
+    .date{color:#6b6b6b;font-size:14px;margin-bottom:18px;}
+    article{background:var(--blanco);padding:18px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.04);}
+    h2{font-size:18px;margin:18px 0 8px;color:var(--azul-profundo);}
+    p{font-size:16px;line-height:1.6;margin:10px 0;color:var(--texto);}
+    .badges{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 8px;}
+    .badge{background:var(--cyan);color:var(--azul-profundo);padding:6px 10px;border-radius:999px;font-weight:600;font-size:14px;border:1px solid rgba(0,0,0,0.06);}
+    .code-badge{background:var(--azul-institucional);color:var(--blanco);padding:6px 10px;border-radius:6px;font-weight:600;font-size:13px;}
+    .btn-wrap{margin-top:18px;}
+    .cta{display:inline-block;background:var(--azul-institucional);color:var(--blanco);text-decoration:none;padding:12px 18px;border-radius:8px;font-weight:600;border:2px solid rgba(0,0,0,0.05);box-shadow:0 4px 12px rgba(0,102,204,0.12);}
+    .cta:hover{background:var(--cyan);color:var(--azul-profundo);}
+    footer{margin-top:28px;padding:18px 16px;background:#f7f9fb;border-top:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .footer-logo{height:34px;}
+    .footer-text{color:#6b6b6b;font-size:14px;}
+    @media (max-width:600px){
+      h1{font-size:22px;}
+      header{padding:10px;}
+      .logo{height:32px;}
+      .container{margin:20px auto;}
+      .cta{width:100%;text-align:center;padding:12px;}
+      .badges{gap:8px;}
     }
   </style>
 </head>
-
 <body>
-  <div class="wrap">
+  <div class="top-deco" aria-hidden="true"></div>
+  <header>
+    <img src="https://i.imgur.com/Wy0lWcy.png" alt="Logo ARGENTINA" class="logo">
+  </header>
 
-<div class="topbar" style="background: #fff; justify-content: space-between; gap: 10px;">
+  <main class="container" role="main">
+    <h1>REIBP y blanqueo: pautas oficiales para su deducción en el Impuesto a las Ganancias</h1>
+    <div class="date">21 de mayo de 2025</div>
 
-  <div class="titlebox" style="text-align: center; flex: 1;">
-    <h1 style="font-size: 20px; color: var(--brand-primario); margin: 0;">Registro de Prestaciones Médicas</h1>
-    <p style="font-size: 11px; margin: 2px 0 0;">Gestión de Auditoría OSPA</p>
-  </div>
+    <article>
+      <h2>El principio general de deducción</h2>
+      <p>La ley de impuesto a las ganancias (LIG) establece en sus artículos <span class="badge">23</span> y <span class="badge">83</span> que son deducibles aquellos gastos incurridos para obtener, mantener y conservar las ganancias gravadas. En consecuencia, cualquier gasto vinculado a la actividad gravada es, en principio, deducible.</p>
 
-  <img
-    class="logo"
-    src="https://i.imgur.com/9YBLfLx.jpeg" 
-    alt="Logo Institucional"
-    style="max-width: 120px; background: #fff; padding: 5px; border-radius: 8px;"
-    onerror="this.style.display='none';"
-  />
+      <p>Como bien señala Enrique Reig, el concepto de necesariedad no debe entenderse con un alcance limitativo que excluya costos convenientes para el desarrollo de la actividad. Específicamente, el inciso a) del artículo <span class="badge">86</span> de la LIG permite deducir los impuestos y tasas que recaen sobre los bienes que produzcan ganancias. Bajo este precepto, el impuesto sobre los bienes personales siempre ha sido deducible en la proporción correspondiente a los activos generadores de renta gravada.</p>
 
-      <div id="logoError" class="small" style="display:none; position: absolute; bottom: -20px;">
-        Error al cargar logos.
-      </div>
-    </div>
+      <h2>El REIBP: metodología y etapas</h2>
+      <p>El paquete fiscal lo creó como un régimen opcional que unifica el pago de varios períodos fiscales (<span class="badge">2023-2027</span> para bienes no regularizados y <span class="badge">2024-2027</span> para bienes regularizados). Sea cual sea la modalidad (tradicional o REIBP), el tributo que recae sobre bienes afectados a rentas gravadas mantiene su carácter de deducible.</p>
 
-    <div class="card">
-      <div class="section">
-        <div class="section-title">Datos de la prestación</div>
+      <p>Esto aplica incluso para los activos regularizados a través del Régimen de Regularización de Activos (RRA). Aunque estuvieron ocultos, si desde el <span class="badge">1 de enero de 2024</span> se afectan a actividades generadoras de renta, el impuesto proporcional resultante es deducible.</p>
 
-        <div class="grid">
-          <div>
-            <label>Fecha y hora de carga (automático)</label>
-            <input id="ts" type="text" readonly />
-          </div>
+      <h2>Impacto en el ejercicio 2025</h2>
+      <p>Para el período fiscal <span class="badge">2025</span>, se debe prestar especial atención a las etapas del blanqueo:</p>
 
-          <div>
-            <label>Fecha de atención</label>
-            <input id="fecha_atencion" type="date" required />
-          </div>
-
-          <div>
-            <label>Hora de atención</label>
-            <input id="hora_atencion" type="time" required />
-          </div>
-
-          <div>
-            <label>Día</label>
-            <select id="dia">
-              <option value=""></option>
-              <option>Lunes</option><option>Martes</option><option>Miércoles</option>
-              <option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option>
-            </select>
-          </div>
-
-          <div>
-            <label>Tipo de atención</label>
-            <select id="tipo_atencion">
-              <option value=""></option>
-              <option>Consultorio</option>
-              <option>Guardia</option>
-              <option>Urgencia</option>
-            </select>
-          </div>
-
-          <div>
-            <label>Consultorio / Guardia (detalle)</label>
-            <input id="consultorio" type="text" placeholder="Ej: Yegoyen / Pichanal / Consultorio 2" />
-          </div>
-        </div>
+      <div class="badges" aria-hidden="true">
+        <div class="badge">Etapa I</div>
+        <div class="badge">Etapas II y III</div>
+        <div class="badge">2025</div>
       </div>
 
-      <!-- ===================== MÉDICO TRATANTE ===================== -->
-      <div class="section">
-        <div class="section-title">Médico tratante</div>
+      <p>Etapa I: el coste se devengó y canceló mayoritariamente en <span class="badge">2024</span>.</p>
+      <p>Etapas II y III: el gravamen determinado constituye un gasto devengado y pagado en <span class="badge">2025</span>. Dado que el cálculo del REIBP es acumulativo, en estos tramos se debe considerar el impuesto diferencial (descontando lo tributado en etapas previas).</p>
+      <p>El profesional deberá analizar, de cada liquidación de la Etapa II y III, qué proporción del patrimonio representan los bienes afectados a ganancias gravadas para determinar el monto exacto a deducir.</p>
 
-        <div class="grid">
-          <div>
-            <label>Médico (desplegable)</label>
-            <select id="medico_tratante" required>
-              <option value=""></option>
-              <option>LOZANO MUÑOZ MARIA E</option>
-              <option>HURTADO MARCELO SAMUEL</option>
-              <option>BLANCO JUAN SIMON</option>
-              <option>COLQUE JAZMIN ANGELES</option>
-              <option>FLORES ZOILA MONICA</option>
-              <option>PEÑA ROXANA SOLEDAD</option>
-              <option>SORIA BRZEZINSKI GERALDINE ANDREA</option>
-              <option>CASTRO SANTIAGO MISAEL</option>
-              <option>RODRIGUEZ JOSE LUIS</option>
-              <option>ROMERO RICARDO JOEL</option>
-              <option>LIQUIN HIPOLITO</option>
-            </select>
-          </div>
+      <h2>Criterio de imputación: ¿percibido o devengado?</h2>
+      <p>Surge el dilema de cómo imputar el costo cuando un contribuyente posee rentas de distintas categorías (ej. primera y cuarta). El artículo <span class="badge">24</span> de la LIG establece que los costes que no puedan imputarse a una fuente específica se deducirán en el ejercicio en que se paguen. Ante la complejidad de prorratear un impuesto patrimonial único, parte de la doctrina sostiene que lo más práctico es aplicar el criterio de lo percibido.</p>
 
-          <div>
-            <label>Descripción de atención / perfil (breve)</label>
-            <input id="perfil_atencion" type="text" placeholder="Ej: guardia, consultorio, referente, etc." />
-          </div>
-        </div>
+      <h2>El rechazo al devengamiento temporal</h2>
+      <p>Se ha planteado si, al cubrir varios períodos, el REIBP debe deducirse en cuotas anuales. La visión es que no es posible. Debe aplicarse el concepto de devengado jurídico consagrado por la Corte Suprema en la causa “Compañía Tucumana de Refrescos SA” (<span class="badge">2011</span>). El gasto se perfecciona cuando acaecen los hechos jurídicos que hacen nacer la obligación tributaria, independientemente de que el beneficio abarque años futuros.</p>
+
+      <h2>Confirmación oficial: Dictamen IF-2025-54213426</h2>
+      <p>La Dirección Nacional de Impuestos, mediante el dictamen del <span class="badge">21 de mayo de 2025</span>, ratificó nuestra postura al responder que:</p>
+
+      <p>1. El REIBP es deducible en la proporción de activos afectados a ganancias gravadas.</p>
+      <p>2. El monto abonado no debe prorratearse entre los períodos que el régimen sustituye. Se deduce íntegramente en el ejercicio donde se perfeccionó la obligación y el pago.</p>
+
+      <h2>Conclusión</h2>
+      <p>Para el ejercicio <span class="badge">2025</span>, los contribuyentes que hayan ingresado al REIBP por las Etapas II y III del RRA podrán deducir el impuesto correspondiente a los bienes productivos, imputándolo en su totalidad a dicho período fiscal, siguiendo un criterio de practicidad y respaldados por la interpretación del devengado jurídico y la doctrina administrativa vigente.</p>
+
+      <div class="btn-wrap">
+        <a class="cta" href="https://wa.link/djds2j" target="_blank" rel="noopener noreferrer">Formación en Ganancias Personas Humanas Y Bienes Personales</a>
       </div>
+    </article>
+  </main>
 
-      <!-- ===================== PACIENTE ===================== -->
-      <div class="section">
-        <div class="section-title">Paciente</div>
-
-        <div class="grid">
-          <div>
-            <label>DNI</label>
-            <input id="dni" type="number" inputmode="numeric" />
-          </div>
-
-          <div>
-            <label>Paciente</label>
-            <input id="paciente" type="text" />
-          </div>
-
-          <div>
-            <label>Patología</label>
-            <input id="patologia" type="text" />
-          </div>
-
-          <div>
-            <label>Celular</label>
-            <input id="celular" type="tel" />
-          </div>
-        </div>
-      </div>
-
-      <!-- ===================== CONTROL ADMINISTRATIVO ===================== -->
-      <div class="section">
-        <div class="section-title">Control administrativo</div>
-
-        <div class="grid">
-          <div>
-            <label>Orden presentada</label>
-            <select id="orden_presentada">
-              <option value=""></option>
-              <option>SI</option>
-              <option>NO</option>
-            </select>
-          </div>
-
-          <div>
-            <label>Orden pagada</label>
-            <select id="orden_pagada">
-              <option value=""></option>
-              <option>SI</option>
-              <option>NO</option>
-            </select>
-          </div>
-
-          <div>
-            <label>N° Orden / Comprobante (si aplica)</label>
-            <input id="nro_orden" type="text" placeholder="Ej: OP-000123 / TAD / Recibo" />
-          </div>
-
-          <div>
-            <label>Importe (si aplica)</label>
-            <input id="importe" type="text" placeholder="Ej: 198000" />
-          </div>
-        </div>
-      </div>
-
-      <!-- ===================== OBSERVACIONES ===================== -->
-      <div class="section">
-        <div class="section-title">Observaciones</div>
-        <textarea id="observaciones" placeholder="Observaciones médicas/administrativas/auditoría (duplicados, fuera de horario, falta de orden, etc.)"></textarea>
-      </div>
-
-      <!-- ===================== ACCIONES ===================== -->
-      <div class="row-actions">
-        <button type="button" onclick="enviarRegistro()">Guardar registro</button>
-        <button type="button" class="btn-ghost" onclick="limpiarFormulario()">Limpiar</button>
-        <div class="status" id="statusBox">Listo para cargar.</div>
-      </div>
-
-    </div>
-  </div>
-
-<script>
-    /* =========================================================
-       CONFIG: WEB APP URL
-       ========================================================= */
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw_JHMR0npwxVZhRtffaRXVhg7v0HmiY9Mw1KT5OHdy3FEpq45eHD27JUxH5iq0NRya7Q/exec";
-
-    /* =========================================================
-       INIT: Timestamp de carga
-       ========================================================= */
-    function isoNowLocal(){
-      // Genera formato YYYY-MM-DD HH:mm:ss
-      const d = new Date();
-      return d.toLocaleString('sv-SE'); 
-    }
-    document.getElementById("ts").value = isoNowLocal();
-
-    /* =========================================================
-       HELPERS
-       ========================================================= */
-    function setStatus(msg){
-      document.getElementById("statusBox").textContent = msg;
-    }
-
-    function val(id){ return (document.getElementById(id).value || "").trim(); }
-
-    function limpiarFormulario(){
-      const ids = [
-        "fecha_atencion","hora_atencion","dia","tipo_atencion","consultorio",
-        "medico_tratante","perfil_atencion",
-        "dni","paciente","patologia","celular",
-        "orden_presentada","orden_pagada","nro_orden","importe",
-        "observaciones"
-      ];
-      ids.forEach(i => {
-        const el = document.getElementById(i);
-        if(el) el.value = "";
-      });
-      document.getElementById("ts").value = isoNowLocal();
-      setStatus("Listo para una nueva carga.");
-    }
-
-    /* =========================================================
-       ENVÍO: COMPATIBLE CON TU APPS SCRIPT
-       ========================================================= */
-    function enviarRegistro() {
-      // 1. Validaciones mínimas
-      if (!val("fecha_atencion")) { setStatus("⚠️ Falta: Fecha de atención."); return; }
-      if (!val("medico_tratante")){ setStatus("⚠️ Falta: Médico tratante."); return; }
-
-      // 2. Construcción de la fila según las columnas de tu imagen
-      // Orden: ts, fecha_atencion, dia, tipo_atencion, medico_tratante, perfil, consultorio, dni, paciente, patologia, celular, orden_pres, orden_pag, nro_orden, importe, observaciones
-      const fila = [
-        val("ts"),                // A
-        val("fecha_atencion"),    // B
-        val("dia"),               // C
-        val("tipo_atencion"),     // D
-        val("medico_tratante"),   // E
-        val("perfil_atencion"),   // F
-        val("consultorio"),       // G
-        val("dni"),               // H
-        val("paciente"),          // I
-        val("patologia"),         // J
-        val("celular"),           // K
-        val("orden_presentada"),  // L
-        val("orden_pagada"),      // M
-        val("nro_orden"),         // N
-        val("importe"),           // O
-        val("observaciones")      // P
-      ];
-
-      // El Apps Script usa 'nombreHoja' para evitar el error de la variable 'respuestas'
-      const payload = {
-        nombreHoja: "respuestas", 
-        fila: fila
-      };
-
-      setStatus("⏳ Enviando...");
-
-      fetch(WEB_APP_URL, {
-        method: "POST",
-        mode: "no-cors", 
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "text/plain"
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
-        // En no-cors asumimos éxito si no hay error de red
-        setStatus("✅ ¡Guardado en Google Sheets!");
-        setTimeout(limpiarFormulario, 1000);
-      })
-      .catch((err) => {
-        console.error(err);
-        setStatus("❌ Error de red o permisos.");
-      });
-    }
-</script>
-
+  <footer>
+    <img src="https://i.imgur.com/Ph8CquW.png" alt="Logo Footer ARGENTINA" class="footer-logo">
+    <div class="footer-text">Escencial Consultora ARGENTINA</div>
+  </footer>
 </body>
 </html>
